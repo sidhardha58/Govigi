@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { CustomersModule } from './customers/customers.module';
 import { CustomerTypesModule } from './customer-types/customer-types.module';
 
+import { AddressesModule } from './addresses/addresses.module';
+
 @Module({
   imports: [
     // Load .env globally
@@ -26,6 +28,7 @@ import { CustomerTypesModule } from './customer-types/customer-types.module';
     AuthModule,
     CustomersModule,
     CustomerTypesModule,
+    AddressesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
