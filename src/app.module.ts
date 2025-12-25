@@ -12,6 +12,7 @@ import { CustomersModule } from './customers/customers.module';
 import { CustomerTypesModule } from './customer-types/customer-types.module';
 
 import { AddressesModule } from './addresses/addresses.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AddressesModule } from './addresses/addresses.module';
     CustomersModule,
     CustomerTypesModule,
     AddressesModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Address, AddressSchema } from './address.schema';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -16,9 +15,6 @@ export class User {
   email?: string;
 
   @Prop() businessType?: string;
-
-  @Prop({ type: [AddressSchema], default: [] })
-  addresses: Address[];
 
   @Prop({ required: true, unique: true })
   contact: string;
@@ -49,6 +45,3 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-// Indexes
-UserSchema.index({ contact: 1 }, { unique: true });

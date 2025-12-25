@@ -5,24 +5,38 @@ import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name)
+    private readonly userModel: Model<UserDocument>,
+  ) {}
 
-  // Create a new user
-
-  async createUser(data: Partial<User>) {
-    const newUser = new this.userModel(data);
-    return newUser.save();
+  // Create user (generic - used for admin, customer, vendor)
+  async create(data: Partial<User>) {
+    return this.userModel.create(data);
   }
 
-  // Find user by email
+  // Backward compatibility (if already used elsewhere)
+  async createUser(data: Partial<User>) {
+    return this.create(data);
+  }
+
+  // Find by contact (USED FOR ADMIN BOOTSTRAP)
+  async findByContact(contact: string) {
+    return this.userModel.findOne({ contact }).exec();
+  }
+
+  // Find by email
   async findByEmail(email: string) {
     return this.userModel.findOne({ email }).exec();
   }
 
-  // Find user by ID
+  // Find by ID
   async findById(id: string) {
     return this.userModel.findById(id).exec();
   }
-}
 
-export default UsersService;
+  // find all admins (useful later)
+  async findAdmins() {
+    return this.userModel.find({ role: 'admin' }).exec();
+  }
+}
