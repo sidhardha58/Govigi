@@ -59,6 +59,7 @@ export class Customer {
   @Prop({
     type: Types.ObjectId,
     ref: 'User',
+    unique: true,
     required: true,
     index: true,
   })

@@ -15,19 +15,25 @@ export class CustomerTypesService {
   ) {}
 
   async create(dto: CreateCustomerTypeDto): Promise<CustomerType> {
+    const normalizedName = dto.typeName.trim().toLowerCase();
+
     const exists = await this.customerTypeModel.findOne({
-      typeName: dto.typeName,
+      typeName: normalizedName,
     });
 
     if (exists) {
       throw new ConflictException('Customer type already exists');
     }
 
-    const customerType = new this.customerTypeModel(dto);
+    const customerType = new this.customerTypeModel({
+      ...dto,
+      typeName: normalizedName,
+    });
+
     return customerType.save();
   }
 
   async findAll(): Promise<CustomerType[]> {
-    return this.customerTypeModel.find().exec();
+    return this.customerTypeModel.find({ status: 'active' }).exec();
   }
 }

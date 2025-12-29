@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -27,6 +28,12 @@ export class CustomersController {
   create(@Req() req, @Body() dto: CreateCustomerDto) {
     const userId = req.user.userId; // from JWT
     return this.customersService.create(dto, userId);
+  }
+
+  @Get('me')
+  getMyProfile(@Req() req) {
+    const userId = req.user.userId;
+    return this.customersService.findByUser(userId);
   }
 
   @Get()

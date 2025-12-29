@@ -1,37 +1,36 @@
-import { Body, Controller, Post } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import { Body, Controller, Post, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignupDto } from './dto/signup.dto';
 import { SigninDto } from './dto/signin.dto';
-import { UseGuards, Get, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('signup')
-  signup(@Body() body: SignupDto) {
-    const { firstName, lastName, email, contact, password } = body;
-
-    return this.authService.signup(
-      firstName,
-      lastName,
-      email,
-      password,
-      contact,
-    );
-  }
-
+  // ============ ADMIN LOGIN ============
   @Post('signin')
   signin(@Body() body: SigninDto) {
-    const { email, password } = body;
-    return this.authService.signin(email, password);
+    return this.authService.signin(body.email, body.password);
   }
 
+  // ============ SEND OTP ============
+  @Post('send-otp')
+  sendOtp(@Body('contact') contact: string) {
+    return this.authService.sendOtp(contact);
+  }
+
+  // ============ VERIFY OTP ============
+  @Post('verify-otp')
+  verifyOtp(@Body('contact') contact: string, @Body('otp') otp: string) {
+    return this.authService.verifyOtp(contact, otp);
+  }
+
+  // ============ ME ============
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
   getProfile(@Req() req) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
     return req.user;
   }
 }

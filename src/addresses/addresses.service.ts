@@ -12,15 +12,27 @@ export class AddressesService {
   ) {}
 
   async create(dto: CreateAddressDto, userId: string): Promise<Address> {
+    if (dto.isDefault) {
+      // unset existing default addresses
+      await this.addressModel.updateMany(
+        { user: userId, isDefault: true },
+        { isDefault: false },
+      );
+    }
+
     const address = new this.addressModel({
       ...dto,
       user: new Types.ObjectId(userId),
     });
+
     return address.save();
   }
 
   async findByUser(userId: string): Promise<Address[]> {
-    return this.addressModel.find({ user: userId }).exec();
+    return this.addressModel
+      .find({ user: userId })
+      .populate('user', 'contact role')
+      .exec();
   }
 
   async findById(id: string): Promise<Address> {

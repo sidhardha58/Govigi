@@ -8,10 +8,7 @@ export class User {
   @Prop() firstName?: string;
   @Prop() lastName?: string;
 
-  @Prop({
-    lowercase: true,
-    trim: true,
-  })
+  @Prop({ lowercase: true, trim: true, sparse: true })
   email?: string;
 
   @Prop() businessType?: string;
@@ -19,9 +16,11 @@ export class User {
   @Prop({ required: true, unique: true })
   contact: string;
 
-  @Prop({ required: true })
-  password: string;
+  // ✅ OPTIONAL password (admin only)
+  @Prop({ select: false })
+  password?: string;
 
+  // ✅ OTP fields
   @Prop() otp?: string;
   @Prop() otpExpires?: Date;
 

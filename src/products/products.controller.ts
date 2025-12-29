@@ -20,7 +20,7 @@ import { RolesGuard } from '../auth/roles.guard';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  //ADMIN ONLY ROUTES
+  // ================= ADMIN ONLY =================
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
@@ -50,15 +50,13 @@ export class ProductsController {
     return this.productsService.bulkUpdate(body.productIds, body.updates);
   }
 
-  // PUBLIC / CUSTOMER ROUTES
+  // ================= PUBLIC =================
 
-  // Public product listing (no login required)
   @Get()
   findAll(@Query() query) {
     return this.productsService.findAll(query);
   }
 
-  // Public product detail
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findById(id);
