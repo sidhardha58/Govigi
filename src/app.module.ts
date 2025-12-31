@@ -16,6 +16,8 @@ import { ProductsModule } from './products/products.module';
 
 import { SmsModule } from './sms/sms.module';
 
+import { CartModule } from './cart/cart.module';
+
 @Module({
   imports: [
     // Load .env globally
@@ -34,6 +36,7 @@ import { SmsModule } from './sms/sms.module';
     AddressesModule,
     ProductsModule,
     SmsModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],
