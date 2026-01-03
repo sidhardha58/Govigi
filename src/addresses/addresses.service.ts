@@ -28,11 +28,10 @@ export class AddressesService {
     return address.save();
   }
 
-  async findByUser(userId: string): Promise<Address[]> {
-    return this.addressModel
-      .find({ user: userId })
-      .populate('user', 'contact role')
-      .exec();
+  async findByUser(userId: string) {
+    return this.addressModel.find({
+      user: new Types.ObjectId(userId),
+    });
   }
 
   async findById(id: string): Promise<Address> {

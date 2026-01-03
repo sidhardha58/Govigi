@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
@@ -127,6 +126,19 @@ export class CartService {
     );
 
     this.recalculateTotal(cart);
+    return cart.save();
+  }
+
+  // ========================
+  // CLEAR CART (AFTER CHECKOUT)
+  // ========================
+  async clearCart(userId: string): Promise<Cart> {
+    const cart = await this.cartModel.findOne({ user: userId });
+    if (!cart) throw new NotFoundException('Cart not found');
+
+    cart.items = [];
+    cart.totalAmount = 0;
+
     return cart.save();
   }
 
